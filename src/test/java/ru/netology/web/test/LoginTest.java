@@ -25,7 +25,7 @@ class LoginTest {
 
     @Test
     void shouldSuccessfulLogin() {
-        var loginPage = new LoginPage();
+        var loginPage = open("http://localhost:9999", LoginPage.class);
         var registratedUser = DataHelper.getAuthInfo();
         var verificationPage = loginPage.validLogin(registratedUser);
         verificationPage.verificationPageVisible();
@@ -39,6 +39,7 @@ class LoginTest {
         var notRegistratedUser = DataHelper.generateRandomUser();
         var verificationPage = loginPage.validLogin(notRegistratedUser);
         verificationPage.errorNotificationVisible();
+        loginPage.findErrorMessage("Ошибка! " + "Неверно указан логин или пароль");
     }
 
     @Test
@@ -50,6 +51,7 @@ class LoginTest {
         var verificationCode = DataHelper.getRandomCode();
         verificationPage.verify(verificationCode.getCode());
         verificationPage.errorNotificationVisible();
+        loginPage.findErrorMessage("Ошибка! Неверно указан код! Попробуйте ещё раз.");
     }
 
     @Test
